@@ -1,28 +1,37 @@
 package com.emuneee.marshmallowfm;
 
 import android.content.ComponentName;
+import android.content.Intent;
 import android.content.ServiceConnection;
 import android.media.session.MediaController;
 import android.media.session.PlaybackState;
 import android.net.Uri;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ServiceConnection {
 
     private MediaController mMediaController;
+    private ImageButton mPlayButton;
 
     private MediaController.Callback mMediaControllerCallback = new MediaController.Callback() {
         @Override
         public void onPlaybackStateChanged(PlaybackState state) {
 
             switch (state.getState()) {
+                case PlaybackState.STATE_NONE:
+                    mPlayButton.setImageResource(R.mipmap.ic_play);
+                    break;
                 case PlaybackState.STATE_PLAYING:
+                    mPlayButton.setImageResource(R.mipmap.ic_pause);
                     break;
                 case PlaybackState.STATE_PAUSED:
+                    mPlayButton.setImageResource(R.mipmap.ic_play);
                     break;
                 case PlaybackState.STATE_FAST_FORWARDING:
                     break;
@@ -36,6 +45,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mPlayButton = (ImageButton) findViewById(R.id.play);
+        mPlayButton.setOnClickListener(this);
+        findViewById(R.id.rewind).setOnClickListener(this);
+        findViewById(R.id.forward).setOnClickListener(this);
+
+        Intent intent = new Intent(this, AudioPlayerService.class);
+        getApplicationContext().bindService(intent, this, 0);
     }
 
     @Override
@@ -48,8 +64,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else if(mMediaController.getPlaybackState().getState() == PlaybackState.STATE_PAUSED){
                     mMediaController.getTransportControls().play();
                 } else {
-                    Uri uri = Uri.parse("http://c.espnradio.com/s:5L8r1/audio/2580146/pti_2015-10-13-180346.64k.mp3");
-                    mMediaController.getTransportControls().playFromUri(uri, null);
+                    Uri uri = Uri.parse("http://c.espnradio.com/s:5L8r1/audio/2580934/pti_2015-10-14-180334.64k.mp3");
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        mMediaController.getTransportControls().playFromUri(uri, null);
+                    } else {
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable(AudioPlayerService.PARAM_TRACK_URI, uri);
+                        mMediaController.getTransportControls().playFromSearch("", bundle);
+                    }
+
+
                 }
                 break;
             case R.id.rewind:
@@ -75,5 +99,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onServiceDisconnected(ComponentName name) {
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = new Intent(this, AudioPlayerService.class);
+        startService(intent);
     }
 }
