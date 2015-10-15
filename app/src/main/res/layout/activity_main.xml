@@ -10,28 +10,23 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
 
-    <RadioButton
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New RadioButton"
-        android:id="@+id/radioButton"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"/>
-
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New RadioButton"
-        android:id="@+id/radioButton2"
-        android:layout_below="@+id/radioButton"
-        android:layout_alignParentStart="true"/>
+        android:layout_above="@+id/controls"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:gravity="center"
+        android:text="Press Play"
+        android:id="@+id/title"
+        android:layout_centerHorizontal="true"/>
 
     <LinearLayout
+        android:id="@+id/controls"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/radioButton2"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:layout_marginTop="37dp">
 
         <ImageButton
@@ -59,4 +54,5 @@
             android:layout_height="48dp"/>
 
     </LinearLayout>
+
 </RelativeLayout>

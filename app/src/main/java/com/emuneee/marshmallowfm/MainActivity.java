@@ -3,6 +3,7 @@ package com.emuneee.marshmallowfm;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.media.MediaMetadata;
 import android.media.session.MediaController;
 import android.media.session.PlaybackState;
 import android.net.Uri;
@@ -13,11 +14,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ServiceConnection {
 
     private MediaController mMediaController;
     private ImageButton mPlayButton;
+    private TextView mTitle;
 
     private MediaController.Callback mMediaControllerCallback = new MediaController.Callback() {
         @Override
@@ -39,6 +42,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
             }
         }
+
+        @Override
+        public void onMetadataChanged(MediaMetadata metadata) {
+            super.onMetadataChanged(metadata);
+            mTitle.setText(metadata.getString(MediaMetadata.METADATA_KEY_TITLE));
+        }
     };
 
     @Override
@@ -46,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mPlayButton = (ImageButton) findViewById(R.id.play);
+        mTitle = (TextView) findViewById(R.id.title);
         mPlayButton.setOnClickListener(this);
         findViewById(R.id.rewind).setOnClickListener(this);
         findViewById(R.id.forward).setOnClickListener(this);

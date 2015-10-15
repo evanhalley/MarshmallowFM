@@ -68,6 +68,12 @@ public class AudioPlayerService extends Service implements MediaPlayer.OnPrepare
                                 .setState(PlaybackState.STATE_CONNECTING, 0, 1.0f)
                                 .build();
                         mMediaSession.setPlaybackState(mPlaybackState);
+                        mMediaSession.setMetadata(new MediaMetadata.Builder()
+                                .putString(MediaMetadata.METADATA_KEY_ARTIST, "ESPN: PTI")
+                                .putString(MediaMetadata.METADATA_KEY_AUTHOR, "ESPN: PTI")
+                                .putString(MediaMetadata.METADATA_KEY_ALBUM, "ESPN")
+                                .putString(MediaMetadata.METADATA_KEY_TITLE, "Cubs The Favorites?: 10/14/15")
+                                .build());
                         break;
                     case PlaybackState.STATE_NONE:
                         mMediaPlayer.setDataSource(AudioPlayerService.this, uri);
@@ -76,6 +82,12 @@ public class AudioPlayerService extends Service implements MediaPlayer.OnPrepare
                                 .setState(PlaybackState.STATE_CONNECTING, 0, 1.0f)
                                 .build();
                         mMediaSession.setPlaybackState(mPlaybackState);
+                        mMediaSession.setMetadata(new MediaMetadata.Builder()
+                                .putString(MediaMetadata.METADATA_KEY_ARTIST, "ESPN: PTI")
+                                .putString(MediaMetadata.METADATA_KEY_AUTHOR, "ESPN: PTI")
+                                .putString(MediaMetadata.METADATA_KEY_ALBUM, "ESPN")
+                                .putString(MediaMetadata.METADATA_KEY_TITLE, "Cubs The Favorites?: 10/14/15")
+                                .build());
                         break;
 
                 }
@@ -186,12 +198,6 @@ public class AudioPlayerService extends Service implements MediaPlayer.OnPrepare
         mMediaSession.setActive(true);
         mMediaSession.setFlags(MediaSession.FLAG_HANDLES_MEDIA_BUTTONS |
                 MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS);
-        mMediaSession.setMetadata(new MediaMetadata.Builder()
-                .putString(MediaMetadata.METADATA_KEY_ARTIST, "ESPN: PTI")
-                .putString(MediaMetadata.METADATA_KEY_AUTHOR, "ESPN: PTI")
-                .putString(MediaMetadata.METADATA_KEY_ALBUM, "ESPN")
-                .putString(MediaMetadata.METADATA_KEY_TITLE, "Cubs The Favorites?: 10/14/15")
-                .build());
         mMediaSession.setPlaybackState(mPlaybackState);
 
         // 2) get instance to AudioManager
